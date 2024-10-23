@@ -1,0 +1,13 @@
+name: Hello World
+
+on:
+  schedule:
+    - cron: "0 9 * * *"  # Runs every day at 9:00 AM UTC, which is 2:00 PM in Pakistan
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello World
+        run: echo "Hello, World!"
