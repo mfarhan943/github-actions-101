@@ -1,0 +1,34 @@
+name: Test Pull Request Output
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test_pr_output:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up environment
+        run: echo "Testing PR Output..."
+
+      - name: Create a mock pull request
+        id: create_pull_request
+        run: |
+          # Mock a pull request creation
+          echo "::set-output name=generated_pr::https://github.com/owner/repo/pull/123"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debugging Output
+        run: |
+          echo "Generated PR URL: ${{ steps.create_pull_request.outputs.generated_pr }}"
+          if [[ -z "${{ steps.create_pull_request.outputs.generated_pr }}" ]]; then
+            echo "Output not set!"
+          else
+            echo "Output is set!"
+          fi
+
+      - name: Use PR Output in Subsequent Steps
+        if: ${{ steps.create_pull_request.outputs.generated_pr }}
+        run: |
+          echo "The created pull request URL is: ${{ steps.create_pull_request.outputs.generated_pr }}"
